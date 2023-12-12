@@ -1,17 +1,35 @@
 import React from 'react';
 import {AiFillDelete} from "react-icons/ai"
+import { useSelector } from 'react-redux';
 
 const Cart = () => {
+
+    const {cartItems} = useSelector(state=>state.cart)
   return (
     <div className='cart'>
         <main>
-            <CartItem
+
+            {
+                cartItems.length > 0 ? (
+                    cartItems.map(i =>{
+                        <CartItem
+                            imgSrc="https://cdn.pixabay.com/photo/2019/02/16/08/34/shoes-3999844_1280.jpg" 
+                            name = {"Black Shoes"}
+                            price={120000} 
+                            qty={1}
+                            id="acascasc" 
+                        /> 
+                    })
+                ) :
+                <h1>No Items in Cart</h1>
+            }
+            {/* <CartItem
                 imgSrc="https://cdn.pixabay.com/photo/2019/02/16/08/34/shoes-3999844_1280.jpg" 
                 name = {"Black Shoes"}
                 price={120000} 
                 qty={1}
                 id="acascasc" 
-            />            
+            />             */}
             
         </main>
 
