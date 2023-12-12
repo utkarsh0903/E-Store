@@ -1,43 +1,66 @@
 import React from 'react';
 import {AiFillDelete} from "react-icons/ai"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Cart = () => {
 
-    const {cartItems} = useSelector(state=>state.cart)
+    const {cartItems, subTotal, shipping, tax, total} = useSelector(state=>state.cart);
+    const dispatch = useDispatch()
+
+    const increment = (id) => {
+        dispatch({
+            type:'increment',
+            payload:id,
+        });
+        dispatch({type: "calculatePrice" });
+    };
+
+    const decrement = (id) => {
+        dispatch({
+            type:'decrement',
+            payload:id,
+        });
+        dispatch({type: "calculatePrice" });
+    };
+
+    const deleteHandler = (id) =>{
+        dispatch({
+            type:'deleteFromCart',
+            payload:id,
+        });
+        dispatch({type: "calculatePrice" });
+    };
+
   return (
     <div className='cart'>
         <main>
 
             {
                 cartItems.length > 0 ? (
-                    cartItems.map(i =>{
-                        <CartItem
-                            imgSrc="https://cdn.pixabay.com/photo/2019/02/16/08/34/shoes-3999844_1280.jpg" 
-                            name = {"Black Shoes"}
-                            price={120000} 
-                            qty={1}
-                            id="acascasc" 
+                    cartItems.map((i) =>{
+                      return  <CartItem
+                            imgSrc={i.imgSrc} 
+                            name = {i.name}
+                            price={i.price} 
+                            qty={i.quantity}
+                            id={i.id} 
+                            key={i.id}
+                            increment={increment}
+                            decrement={decrement}
+                            deleteHandler={deleteHandler}
                         /> 
                     })
                 ) :
                 <h1>No Items in Cart</h1>
             }
-            {/* <CartItem
-                imgSrc="https://cdn.pixabay.com/photo/2019/02/16/08/34/shoes-3999844_1280.jpg" 
-                name = {"Black Shoes"}
-                price={120000} 
-                qty={1}
-                id="acascasc" 
-            />             */}
             
         </main>
 
         <aside>
-            <h2>Subtotal : ${2000} </h2>
-            <h2>Shipping : ${200} </h2>
-            <h2>Tax : ${20} </h2>
-            <h2>Total : ${2220} </h2>
+            <h2>Subtotal : ${subTotal} </h2>
+            <h2>Shipping : ${shipping} </h2>
+            <h2>Tax : ${tax} </h2>
+            <h2>Total : ${total} </h2>
         </aside>
     </div>
   )
@@ -55,7 +78,7 @@ const CartItem = ({imgSrc, name, price, qty, decrement, increment, deleteHandler
         <p>{qty}</p>
         <button onClick={()=> increment(id)}>+</button>
     </div>
-    <AiFillDelete onClick={() => deleteHandler} />
+    <AiFillDelete onClick={() => deleteHandler(id)} />
 </div>
 )
 
