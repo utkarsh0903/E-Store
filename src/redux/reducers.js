@@ -17,17 +17,11 @@ export const cartReducer = createReducer({
             state.cartItems.forEach((i) => {
                 if(i.id === item.id) {
                     i.quantity++;
-                    // state.subTotal += i.price;
-                    // state.tax += i.price * 0.18;
-                    // state.total += state.subTotal + state.tax;
                 }
             })
 
         } else{
             state.cartItems.push(item);
-        //     state.subTotal += item.price;
-        //     state.tax += item.price * 0.18;
-        //     state.total += state.subTotal + state.tax;
         }
 
     },
@@ -37,9 +31,6 @@ export const cartReducer = createReducer({
         state.cartItems.forEach((i) => {
             if(i.id === action.payload) {
                 i.quantity++;
-                // state.subTotal += i.price;
-                // state.tax += i.price * 0.18;
-                // state.total += state.subTotal + state.tax;
             }
         })
     },
@@ -48,9 +39,6 @@ export const cartReducer = createReducer({
         const item = state.cartItems.find((i) => i.id === action.payload);
             if(item.quantity > 1) {
                 item.quantity--;
-                // state.subTotal -= item.price;
-                // state.tax -= item.price * 0.18;
-                // state.total -= state.subTotal + state.tax;
             } else {
 
             }
