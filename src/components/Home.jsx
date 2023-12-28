@@ -10,7 +10,6 @@ const Home = () => {
   const [productList, setProductList] = useState([]);
 
   const addToCartHandler = (options) => {
-    console.log(options);
     toast.success("Added to cart");
     dispatch({
       type: "addToCart",
@@ -23,7 +22,6 @@ const Home = () => {
     const apiUrl = 'https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json';
 
     fetch(apiUrl).then((response) => response.json()).then((data) => {
-      console.log(data);
       setProductList(data);
     })
   
