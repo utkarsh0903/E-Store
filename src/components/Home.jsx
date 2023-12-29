@@ -12,6 +12,25 @@ const Home = () => {
   const [searchItemName, setSearchItemName] = useState("");
   const [isSearch, setIsSearch] = useState(false);
 
+  const onChange = (e) =>{
+    let itemName = e.target.value;
+    const regex = / [a-z]*[A-Z]/;
+    if(!itemName){
+      setSearchItemName(itemName);
+    }else  if(itemName[0].toUpperCase() === itemName[0]){
+        setSearchItemName(itemName);
+    }
+    else {
+      if(regex.test(itemName)){
+        setSearchItemName(itemName);
+        console.log(true);
+      } else{
+        console.log(false);
+      }
+      setSearchItemName(itemName[0].toUpperCase() + itemName.slice(1));
+    }
+  }
+
   const searchItem = () => {
     console.log(searchItemName);
     setIsSearch(true);
@@ -41,25 +60,23 @@ const Home = () => {
   return (
     <div className='home'>
       <div className="search-bar">
-        <input type="text" onChange={(e) => {
-            setSearchItemName(e.target.value)
-          }} placeholder='Search for products...' />
+        <input type="text" onChange={(e) => onChange(e)} placeholder='Search for products...' />
         <button onClick={searchItem}>
           <FiSearch />
         </button>
       </div>
       <div className="itemList">
         { isSearch ? (
-          productList.filter( i => 
-            (i.color === searchItemName || i.type === searchItemName || i.name === searchItemName)
-          ).map( i => {
-            return  <ProductCard key={i.id} name={i.name} price={i.price}
-                    imgSrc={i.imageURL} id={i.id} maxQuantity={i.quantity} handler={addToCartHandler}  />
+          productList.filter( item => 
+            (item.color.includes(searchItemName) || item.type.includes(searchItemName) || item.name.includes(searchItemName))
+          ).map( item => {
+            return  <ProductCard key={item.id} name={item.name} price={item.price}
+                    imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
           })
         ) : (
-          productList.map(i => {
-            return  <ProductCard key={i.id} name={i.name} price={i.price}
-                    imgSrc={i.imageURL} id={i.id} maxQuantity={i.quantity} handler={addToCartHandler}  />
+          productList.map(item => {
+            return  <ProductCard key={item.id} name={item.name} price={item.price}
+                    imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
           })
         )
         }
