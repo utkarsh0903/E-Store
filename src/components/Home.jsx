@@ -49,11 +49,19 @@ const Home = () => {
         </button>
       </div>
       <div className="itemList">
-        {
-            productList.map( i => {
-              return  <ProductCard key={i.id} name={i.name} price={i.price}
+        { isSearch ? (
+          productList.filter( i => 
+            (i.color === searchItemName || i.type === searchItemName || i.name === searchItemName)
+          ).map( i => {
+            return  <ProductCard key={i.id} name={i.name} price={i.price}
                     imgSrc={i.imageURL} id={i.id} maxQuantity={i.quantity} handler={addToCartHandler}  />
-            })
+          })
+        ) : (
+          productList.map(i => {
+            return  <ProductCard key={i.id} name={i.name} price={i.price}
+                    imgSrc={i.imageURL} id={i.id} maxQuantity={i.quantity} handler={addToCartHandler}  />
+          })
+        )
         }
       </div>
     </div>
