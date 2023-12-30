@@ -12,6 +12,10 @@ const Home = () => {
   const [productList, setProductList] = useState([]);
   const [searchItemName, setSearchItemName] = useState("");
   const [isSearch, setIsSearch] = useState(false);
+  const [isFilter, setIsFilter] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
 
   const onChange = (e) =>{
     let itemName = e.target.value;
@@ -35,7 +39,29 @@ const Home = () => {
   const searchItem = () => {
     console.log(searchItemName);
     setIsSearch(true);
+    setIsFilter(false);
+    setIsFirstLoad(false);
   }
+
+  const handleFilterChange = ({event}) => {
+    const { value, checked } = event.target;
+    setIsFilter(true);
+    setIsSearch(false);
+    setIsFirstLoad(false);
+
+    if (checked) {
+      setFilteredOptions((prevSelected) => [...prevSelected, value]);
+    } else {
+      setFilteredOptions((prevSelected) =>
+        prevSelected.filter((option) => option !== value)
+      );
+    }
+
+    if(filteredOptions.length === 0) setIsFilter(false);
+
+  };
+
+  console.log('Filtered Options:', filteredOptions);
 
   const addToCartHandler = (options) => {
     toast.success("Added to cart");
@@ -69,25 +95,44 @@ const Home = () => {
       <div className="item-section">
         <div className="filter-section">
           <FilterItem title={"Colour"} filterOptions={["Black", "Blue", "Pink", "Green", "Red", "Grey", "Purple",
-             "White", "Yellow"]} />
-          <FilterItem title={"Gender"} filterOptions={["Men", "Women"]} />
-          <FilterItem title={"Price"} filterOptions={["0 - Rs250", "Rs251 - Rs450", "Rs451 - Rs600"]} />  
-          <FilterItem title={"Type"} filterOptions={["Polo", "Hoodie", "Basic"]} />  
+             "White", "Yellow"]} handleFilterChange={handleFilterChange} />
+          <FilterItem title={"Gender"} filterOptions={["Men", "Women"]} handleFilterChange={handleFilterChange}  />
+          <FilterItem title={"Price"} filterOptions={["0 - Rs250", "Rs251 - Rs450", "Rs451 - Rs600"]}
+             handleFilterChange={handleFilterChange}  />  
+          <FilterItem title={"Type"} filterOptions={["Polo", "Hoodie", "Basic"]} 
+              handleFilterChange={handleFilterChange}  />  
         </div>
         <div className="itemList-section">
-        { isSearch ? (
+          {/* First Time Load  */}
+          {
+            isFirstLoad && productList.map(item => {
+              return  <ProductCard key={item.id} name={item.name} price={item.price}
+                      imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
+            })
+          }
+          {/* Search Section */}
+        { isSearch && (
           productList.filter( item => 
             (item.color.includes(searchItemName) || item.type.includes(searchItemName) || item.name.includes(searchItemName))
           ).map( item => {
             return  <ProductCard key={item.id} name={item.name} price={item.price}
                     imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
           })
-        ) : (
-          productList.map(item => {
-            return  <ProductCard key={item.id} name={item.name} price={item.price}
-                    imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
-          })
         )
+        }
+        {/* Filter Section */}
+        {
+          isFilter && filteredOptions.map( option => {
+            console.log(option);
+            return productList.filter(item => 
+              (item.color.includes(option) || 
+              item.type.includes(option) || 
+              item.gender.includes(option) ))
+              .map( item => {
+               return  <ProductCard key={item.id} name={item.name} price={item.price}
+                        imgSrc={item.imageURL} id={item.id} maxQuantity={item.quantity} handler={addToCartHandler}  />
+              })
+          })
         }
       </div>
       </div>
