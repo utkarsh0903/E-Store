@@ -3,6 +3,7 @@ import ProductCard from './ProductCard';
 import toast from 'react-hot-toast';
 import {FiSearch} from "react-icons/fi";
 import {useDispatch} from "react-redux";
+import FilterItem from './FilterItem';
 
 const Home = () => {  
 
@@ -65,7 +66,15 @@ const Home = () => {
           <FiSearch />
         </button>
       </div>
-      <div className="itemList">
+      <div className="item-section">
+        <div className="filter-section">
+          <FilterItem title={"Colour"} filterOptions={["Black", "Blue", "Pink", "Green", "Red", "Grey", "Purple",
+             "White", "Yellow"]} />
+          <FilterItem title={"Gender"} filterOptions={["Men", "Women"]} />
+          <FilterItem title={"Price"} filterOptions={["0 - Rs250", "Rs251 - Rs450", "Rs451 - Rs600"]} />  
+          <FilterItem title={"Type"} filterOptions={["Polo", "Hoodie", "Basic"]} />  
+        </div>
+        <div className="itemList-section">
         { isSearch ? (
           productList.filter( item => 
             (item.color.includes(searchItemName) || item.type.includes(searchItemName) || item.name.includes(searchItemName))
@@ -80,6 +89,7 @@ const Home = () => {
           })
         )
         }
+      </div>
       </div>
     </div>
   )
