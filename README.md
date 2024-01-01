@@ -1,4 +1,4 @@
-Store to purchase items
+Store to purchase items, user can either search for items or they can filter them.
 
 # Getting Started with Create React App
 
