@@ -32,9 +32,19 @@
     }
 }
 
-.itemList-section{
+.item-section{
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    width: 100%;
 
+    .filter-section{
+        width: 20%;
+    }
+
+    .itemList-section{
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 }
+

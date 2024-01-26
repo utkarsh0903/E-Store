@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FilterItem = ({title, filterOptions, handleFilterChange}) => {
+const FilterItem = ({key, title, filterOptions, handleFilterChange}) => {
   return (
     <div>
         <h2>{title}</h2>
@@ -9,6 +9,7 @@ const FilterItem = ({title, filterOptions, handleFilterChange}) => {
                 return <>
                     <label>
                         <input
+                        key={key}
                         type="checkbox"
                         name="option"
                         value={option}
